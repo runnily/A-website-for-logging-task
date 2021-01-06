@@ -14,5 +14,6 @@
 	    $local->eignore(TRUE);
 	    $x = $y / 0;
 	    $local->assertTrue(TRUE);
-    }
+	}
+}
 ?>

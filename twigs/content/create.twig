@@ -1,0 +1,27 @@
+{% extends '@content/page.twig' %}
+
+
+{% block header %}
+    <article class="col-md-12">
+        <h1 class="text-center">Create Project</h1>
+    </article>
+{% endblock header %}
+
+{% block main %}
+    <!-- A form used to allow the user to create a page -->
+    <section class="row">
+        <article class="ml-auto col-md-8 mr-auto">
+            {% include '@util/message.twig' %}
+            <form action="{{base}}/create" method='post' class="fclass">
+                <div class="form-group">
+                    <label for="pname"> Project Name </label>
+                    <input type="text" id="pname" class="form-control" name="pname" required="required" placeholder="{{user.login}} Enter your project name">
+                    <br>
+                    <label for="summary"> Project Summary </label>
+                    <input type="text" id="summary" class="form-control" name="summary" required="required" placeholder="{{user.login}} Summary">
+                </div>
+                <button class="btn btn-primary" type="submit">{{icon.fa('sign-in-alt')}} Create</button>
+            </form>
+        </article>
+    </section>
+{% endblock main %}

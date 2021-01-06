@@ -2,35 +2,102 @@
 
 {% block onload %}
     $('#alert').on('click', function(){
-        bootbox.alert('Hello World')
+        bootbox.alert('Hi there, This shows projects which have the most contributions. Select projects on the side bar to create a new project')
     })
 {% endblock onload %}
 
+
 {% block header %}
-    <section class="col-md-12 mt-5">
-        <h1 class="text-center">Header</h1>
-    </section>
+    <article class="col-md-12">
+        <h1 class="text-center">Logger</h1>
+    </article>
 {% endblock header %}
 
-{% block main %}
-    <section class="row">
-        <aside class="col">
-            <p>Left</p>
-        </aside>
-        <article class="col-md-8">
-            <div class="jumbotron">
-                This is the middle column
-            </div>
-            <button id="alert" class="btn btn-lg btn-info" type="button">Alert</button>
-        </article>
-        <aside id="rightbar" class="col">
-            <p>Right</p>
-        </aside>
-    </section>
-{% endblock main %}
 
-{% block footer %}
-    <section class="col-md-12">
-        <p class="text-center">Footer</p>
+{% block main %}
+    <!-- Allows user to add a new project -->
+    <a class="text-white bg-secondary border-primary rounded p-3" href="{{base}}/create/">
+            <i class="fas fa-plus"></i>
+            New project
+    </a>
+    
+    <!-- This section contains the main information about the page: contributions and the amount of projects-->
+    <section class="row mt-5">
+        <!-- This shows a bar chart of the amount of contributions on a project -->
+        <article class="col-md-10">
+        <h2> Project contributions </h2>
+            <!-- Only displays this section of cass 'row' if user is logged in -->
+            {% if context.hasUser %}
+            {% include '@util/message.twig' %}
+                <div>
+                    <dl>
+                        <dt class='mb-2'>
+                            Project contributions
+                        </dt>
+                        {% for pname, prj in projects1 %}
+                            <dd class="percentage percentage-{{prj}}"><span class="text">{{pname}}: {{prj}}%</span></dd>
+                        {% endfor %}
+                    </dl>
+                </div>
+                <aside id="rightbar" class="col">
+                    <a id="alert"><i class="far fa-question-circle"></i></a>
+                </aside>
+                <hr>
+
+                <!-- This would list out the list of project the user has within their folder-->
+                <!-- The project is viewed within a 'card' used with bootsrtap templates -->
+                <h3> Your projects </h3>
+                <div class='d-flex flex-wrap borderCards' >
+                    <!-- This would go through the projects to list them out-->
+                    {% for name, prj in projects2 %}
+                        <div class="card mycards m-2">
+                            <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
+                                <div class="carousel-inner">
+                                    {% set active = 1 %}
+                                    {% for img in prj.uploads %}
+                                            {% if active == 1%}
+                                                <div class="carousel-item active">
+                                                    <img class="d-block w-100 a" src="{{img['fname']}}" alt="{{img['filename']}}">
+                                                </div>
+                                            {% else %}
+                                                <div class="carousel-item">
+                                                        <img class="d-block w-100 a" src="{{img['fname']}}" alt="{{img['filename']}}">
+                                                </div>
+                                            {% endif %}
+                                            {% set active = 0 %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title"><a href="{{base}}/project/{{prj.id}}">{{name}}</a></h5>
+                                <p class="card-text">{{prj.summary}}</p>
+                                <hr>
+                                <a href="{{base}}/project/{{prj.id}}">
+                                    <small> <i class="far fa-sticky-note"></i> 
+                                        {% if prj.notes > 1 %}
+                                            {{prj.notes}} notes 
+                                        {% else %}
+                                            {{prj.notes}}  note
+                                        {% endif %}
+                                        | <i class="far fa-user"></i>
+                                        {% if (prj.users > 1) %}
+                                            {{prj.users}} users
+                                        {% else %}
+                                            {{prj.users}} user
+                                        {% endif %}
+                                    </small> 
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+            <!-- When user is not logged in it displays this below:-->
+            <div class="jumbotron">
+                <a href="{{base}}/login">Login</a> to get started!
+            </div>
+            {% endif %}
+        </article>
     </section>
-{% endblock footer %}
+
+{% endblock main %}

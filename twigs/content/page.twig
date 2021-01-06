@@ -6,6 +6,9 @@
 
 {% block head %}
     {% block meta %}
+    <meta name="description" content="A logging website">
+    <meta name="keywords" content="logger, html, coding, github">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% endblock meta %}
 
     {% block links %}
@@ -22,18 +25,25 @@
     {% block navigation %}
 	{% include '@surround/navbar.twig' %}
     {% endblock navigation %}
+    
+    <div class="row out">
+        {% block sidebar %}
+                {% include '@surround/sidebar.twig' %}
+        {% endblock sidebar %}
 
-    <div class="container">
-        {% block pageheader %}
-            <header class="row">
-            {% block header %}
-                {% include '@surround/header.twig' %}
-            {% endblock header %}
-            </header>
-        {% endblock pageheader %}
+        <div class="main">
+            {% block pageheader %}
+                <header class="row">
+                {% block header %}
+                    {% include '@surround/header.twig' %}
+                {% endblock header %}
+                </header>
+            {% endblock pageheader %}
 
-        {% block main %}
-        {% endblock main %}
+            {% block main %}
+            {% endblock main %}
+        </div>
+    </div>
 
         {% block pagefooter %}
             <footer class="row">
@@ -42,7 +52,6 @@
             {% endblock footer %}
             </footer>
         {% endblock pagefooter %}
-    </div>
 {% endblock body %}
 
 {% block userscripts %}

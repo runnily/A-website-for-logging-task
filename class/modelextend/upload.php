@@ -6,6 +6,7 @@
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2018-2020 Newcastle University
+ * @copyright 2018-2020 Adanna Obibuaku
  * @package Framework
  * @subpackage ModelExtend
  */
@@ -31,7 +32,13 @@
  */
         public function canaccess($user, string $op = 'r') : bool
         {
-            return $this->bean->user->equals($user) || $user->isadmin();
+            try 
+            {
+                return $this->bean->user->equals($user) || $user->isadmin();
+            } catch (\Throwable $t ) 
+            {
+                return TRUE; // if the is not user, or user admin assoicated to object
+            }
         }
 /**
  * Hook for adding extra data to a file save.
@@ -75,9 +82,38 @@
  */
         public function downloaded(Context $context) : void
         {
-            /*
-             * Your code goes here
-             */
+            $fname = $context->local()->basedir().$this->bean->fname;
+            $type = explode('.' , $this->bean->filename); // get the type of file
+            $type = $type[count($type)-1];
+            
+            switch ($type) {
+                case "pdf": $ctype="application/pdf"; break;
+                case "exe": $ctype="application/octet-stream"; break;
+                case "zip": $ctype="application/zip"; break;
+                case "doc": $ctype="application/msword"; break;
+                case "xls": $ctype="application/vnd.ms-excel"; break;
+                case "ppt": $ctype="application/vnd.ms-powerpoint"; break;
+                case "gif": $ctype="image/gif"; break;
+                case "png": $ctype="image/png"; break;
+                case "jpe": case "jpeg":
+                case "jpg": $ctype="image/jpg"; break;
+                default: $ctype="application/force-download";
+            }
+
+            if (!file_exists($fname)) {
+                throw new \Framework\Exception\Forbidden('NO SUCH FILE');
+            }
+
+            header("Pragma: public");
+            header("Expires: 0");
+            header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+            header("Cache-Control: private",false);
+            header("Content-Type: $ctype");
+            //sets filename
+            header("Content-Disposition: attachment; filename=\"".basename($this->bean->filename)."\";");
+            header("Content-Transfer-Encoding: binary");
+            header("Content-Length: ".filesize($fname)); // reads size
+            readfile($fname);  // read the file
         }
 /**
  * Automatically called by RedBean when you try to trash an upload. Do any cleanup in here
@@ -96,7 +132,10 @@
                 throw new \Framework\Exception\Forbidden('Permission Denied');
             }
 // Now delete the associated file
-            unlink($context->local()->basedir().$this->bean->fname);
+            $fname = $context->local()->basedir().$this->bean->fname;
+            if (is_file($fname) && file_exists($fname)) {
+                unlink($context->local()->basedir().$this->bean->fname);
+            }
 /* **** Put any cleanup code of yours after this line **** */
             /*
              * Your code goes here

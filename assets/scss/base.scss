@@ -1,0 +1,44 @@
+    $font-stack: Helvetica,
+    sans-serif;
+    $primary-color: #6A7675;
+    @import "barLine.scss";
+    body {
+        font: 100% $font-stack;
+        background-color: $primary-color;
+        width: 100vw;
+        .out {
+            display: flex;
+            flex-wrap: nowrap;
+            clear: both;
+            min-height: 50%;
+            .sidebar {
+                border-radius: 0 0 0 150px;
+                padding: 3%;
+                ul {
+                    list-style-type: none;
+                }
+            }
+            .main {
+                background-color: white;
+                border-radius: 0 0 150px 0;
+                margin: 0;
+                margin-left: 1%;
+                padding: 3%;
+                width: 100vw;
+                min-height: 80vh;
+            }
+        }
+        .borderCards {
+            overflow: scroll;
+            position: relative;
+            height: 25rem;
+            padding: 0;
+            .mycards {
+                width: 17rem;
+                max-height: 25rem;
+                position: relative;
+                overflow: auto;
+            }
+        }
+        @include bar;
+    }
