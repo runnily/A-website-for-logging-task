@@ -57,7 +57,7 @@
             {
                 if ($rest[2] == 'title')
                 {
-                    $dup = R::getAll('SELECT project.pname FROM project, user, manage WHERE project.id = manage.project_id AND user.id = manage.user_id AND user.id = :user AND project.pname = :pname',
+                    $dup = \R::getAll('SELECT project.pname FROM project, user, manage WHERE project.id = manage.project_id AND user.id = manage.user_id AND user.id = :user AND project.pname = :pname',
                         [':user' => "{$context->user()->id}", ':pname' => "{$update}"]
                     ); // check if there is already a duplicate
                     if (!$dup) 
