@@ -1,6 +1,17 @@
 # The Framework Version 3
 
-A PHP Development Framework
+As part of the csc3123 asked to design a webste which should
+ 
+  • support multiple users each working on multiple projects, 
+  • allow users to log the time they worked on a particular project, 
+  • let users store notes about their work to include text, links, relevant images (e.g. 
+  screenshots), and documents (PDF, Word etc.) 
+  • be secure 
+  • have a RESTful interface 
+  
+The PHP development framework was is user defined specific for the module csc3123. More information about the php development framework is below:
+
+## A PHP Development Framework
 
 This version uses more features of PHP than the previous versions, so
 as to provide examplars of how they can be used as the Framework is
