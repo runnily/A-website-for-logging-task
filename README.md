@@ -1,13 +1,13 @@
-# The Framework Version 3
+# A website for logging task
 
 As part of the csc3123 asked to design a webste which should
  
-  • support multiple users each working on multiple projects, 
-  • allow users to log the time they worked on a particular project, 
-  • let users store notes about their work to include text, links, relevant images (e.g. 
+1. support multiple users each working on multiple projects, 
+2. allow users to log the time they worked on a particular project, 
+3. let users store notes about their work to include text, links, relevant images (e.g. 
   screenshots), and documents (PDF, Word etc.) 
-  • be secure 
-  • have a RESTful interface 
+4. be secure 
+5. have a RESTful interface 
   
 The PHP development framework was is user defined specific for the module csc3123. More information about the php development framework is below:
 
